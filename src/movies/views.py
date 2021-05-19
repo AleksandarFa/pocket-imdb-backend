@@ -1,9 +1,13 @@
-from .models import Movie
-from .serializers import MovieSerializer
+from .models import Movie, Genre
+from .serializers import MovieSerializer, GenreSerializer
 from rest_framework import mixins, viewsets
 
 
-# Create your views here.
 class MoviesViewset(mixins.ListModelMixin, viewsets.GenericViewSet):
     queryset = Movie.objects.all()
     serializer_class = MovieSerializer
+
+
+class GenreViewset(mixins.ListModelMixin, viewsets.GenericViewSet):
+    queryset = Genre.objects.all()
+    serializer_class = GenreSerializer
