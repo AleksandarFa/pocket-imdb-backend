@@ -3,7 +3,7 @@ from .serializers import MovieSerializer, GenreSerializer
 from rest_framework import mixins, viewsets
 
 
-class MoviesViewset(mixins.ListModelMixin, viewsets.GenericViewSet):
+class MoviesViewset(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet):
     queryset = Movie.objects.all()
     serializer_class = MovieSerializer
 
