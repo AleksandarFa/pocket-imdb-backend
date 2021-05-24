@@ -7,7 +7,7 @@ class MoviesViewset(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.G
     queryset = Movie.objects.all()
     serializer_class = MovieSerializer
     filterset_fields = ['genre']
-
+    search_fields = ['title']
 
 class GenreViewset(mixins.ListModelMixin, viewsets.GenericViewSet):
     pagination_class = None
