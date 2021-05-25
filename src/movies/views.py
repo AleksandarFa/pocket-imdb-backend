@@ -1,5 +1,5 @@
-from .models import Movie, Genre
-from .serializers import MovieSerializer, GenreSerializer
+from .models import Movie, Genre, Like
+from .serializers import MovieSerializer, GenreSerializer, LikeSerializer
 from rest_framework import mixins, viewsets
 
 
@@ -13,3 +13,8 @@ class GenreViewset(mixins.ListModelMixin, viewsets.GenericViewSet):
     pagination_class = None
     serializer_class = GenreSerializer
     queryset = Genre.objects.all()
+
+
+class LikeViewset(mixins.CreateModelMixin, viewsets.GenericViewSet):
+    serializer_class = LikeSerializer
+    queryset = Like.objects.all()

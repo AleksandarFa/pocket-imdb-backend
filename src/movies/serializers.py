@@ -20,3 +20,9 @@ class MovieSerializer(serializers.ModelSerializer):
 
     def get_num_of_dislikes(self, obj):
         return Like.objects.filter(movie_id=obj.id).filter(liked=False).count()
+
+
+class LikeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Like
+        fields = "__all__"
