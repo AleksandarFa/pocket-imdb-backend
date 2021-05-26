@@ -13,7 +13,7 @@ class MovieSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Movie
-        fields = ('id', 'title', 'description', 'genre', 'coverImage', 'num_of_likes', 'num_of_dislikes')
+        fields = ('id', 'title', 'description', 'genre', 'coverImage', 'num_of_likes', 'num_of_dislikes', 'num_of_views')
 
     def get_num_of_likes(self, obj):
         return Like.objects.filter(movie_id=obj.id).filter(liked=True).count()
