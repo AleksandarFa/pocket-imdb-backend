@@ -15,6 +15,7 @@ class Movie(models.Model):
     description = models.TextField()
     coverImage = models.ForeignKey(File, null=True, blank=True, on_delete=models.CASCADE)
     genre = models.ForeignKey(Genre, on_delete=models.CASCADE)
+    num_of_views = models.IntegerField(default=0)
 
     def __str__(self):
         return self.title
