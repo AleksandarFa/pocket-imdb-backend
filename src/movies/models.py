@@ -1,5 +1,6 @@
 from django.db import models
 from ..files.models import File
+from ..users.models import User
 
 
 class Genre(models.Model):
@@ -17,3 +18,12 @@ class Movie(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Like(models.Model):
+    liked = models.BooleanField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('user_id', 'movie_id')
