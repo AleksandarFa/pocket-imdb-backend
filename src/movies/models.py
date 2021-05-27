@@ -16,6 +16,7 @@ class Movie(models.Model):
     coverImage = models.ForeignKey(File, null=True, blank=True, on_delete=models.CASCADE)
     genre = models.ForeignKey(Genre, on_delete=models.CASCADE)
     num_of_views = models.IntegerField(default=0)
+    watch_list = models.ManyToManyField(User, through="WatchList")
 
     def __str__(self):
         return self.title
@@ -28,3 +29,9 @@ class Like(models.Model):
 
     class Meta:
         unique_together = ('user_id', 'movie_id')
+
+
+class WatchList(models.Model):
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    watched = models.BooleanField(default=False)
