@@ -30,26 +30,28 @@ class MoviesViewset(viewsets.ModelViewSet):
 
     @action(detail=False, pagination_class=None, methods=['GET', 'POST', 'PUT', 'DELETE'])
     def watch_list(self, request):
-        queryset = Movie.watch_list.through.objects.all().filter(user_id=request.user.id)
-        serializer = WatchListSerializer(queryset, many=True)
-
-        if request.method != 'GET':
+        if request.method == 'GET':
+            queryset = Movie.watch_list.through.objects.all().filter(user_id=request.user.id)
+            serializer = WatchListSerializer(queryset, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
             serializer = WatchListSerializer(data=request.data)
             serializer.is_valid(raise_exception=True)
-            movie = Movie.objects.get(id=serializer.data['movie'])
+            serializer.validated_data.update({'user': serializer.validated_data['user'].id})
+            movie = Movie.objects.get(id=serializer.validated_data['movie']["id"])
 
             if request.method == "POST":
-                movie.watch_list.add(request.user, through_defaults={'watched': serializer.data['watched']})
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
+                movie.watch_list.add(serializer.validated_data["user"], through_defaults={
+                                     'watched': serializer.validated_data['watched']})
+                return Response(serializer.validated_data, status=status.HTTP_201_CREATED)
             elif request.method == "PUT":
                 watch_list_item = Movie.watch_list.through.objects.filter(movie=movie.id, user=request.user.id)[0]
-                watch_list_item.watched = serializer.data['watched']
+                watch_list_item.watched = serializer.validated_data['watched']
                 watch_list_item.save()
-                return Response(serializer.data, status=status.HTTP_200_OK)
+                return Response(serializer.validated_data, status=status.HTTP_200_OK)
             elif request.method == "DELETE":
                 movie.watch_list.remove(request.user)
-                return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(serializer.data)
+                return Response(serializer.validated_data, status=status.HTTP_200_OK)
 
 
 class GenreViewset(mixins.ListModelMixin, viewsets.GenericViewSet):

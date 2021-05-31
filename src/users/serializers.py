@@ -2,11 +2,14 @@ from rest_framework import serializers
 
 from src.users.models import User
 from src.common.serializers import ThumbnailerJSONSerializer
+from src.movies.serializers import WatchListSerializer
 
 class UserSerializer(serializers.ModelSerializer):
     profile_picture = ThumbnailerJSONSerializer(required=False,
                                                 allow_null=True,
                                                 alias_target='src.users')
+
+    watchlist_set = WatchListSerializer(many=True)
 
     class Meta:
         model = User
@@ -16,6 +19,7 @@ class UserSerializer(serializers.ModelSerializer):
             'first_name',
             'last_name',
             'profile_picture',
+            'watchlist_set'
         )
         read_only_fields = ('username', )
 
