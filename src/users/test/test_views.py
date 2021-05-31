@@ -5,7 +5,7 @@ from nose.tools import eq_
 from rest_framework.test import APITestCase
 from rest_framework import status
 from faker import Faker
-from ..models import User
+# from ..models import User
 from .factories import UserFactory
 
 fake = Faker()
