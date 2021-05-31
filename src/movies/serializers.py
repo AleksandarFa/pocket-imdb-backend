@@ -1,10 +1,11 @@
 from rest_framework import serializers
 from .models import Movie, Genre, Like, WatchList
 
+
 class GenreSerializer(serializers.ModelSerializer):
     class Meta:
         model = Genre
-        fields = ("id", "name")
+        fields = ("id", "name",)
 
 class MovieSerializer(serializers.ModelSerializer):
     genre = GenreSerializer()
@@ -14,6 +15,7 @@ class MovieSerializer(serializers.ModelSerializer):
     class Meta:
         model = Movie
         fields = "__all__"
+        extra_kwargs = {'id': {'read_only': False}}
 
     def get_num_of_likes(self, obj):
         return Like.objects.filter(movie_id=obj.id).filter(liked=True).count()
@@ -29,6 +31,8 @@ class LikeSerializer(serializers.ModelSerializer):
 
 
 class WatchListSerializer(serializers.ModelSerializer):
+    movie = MovieSerializer()
+
     class Meta:
         model = WatchList
         fields = "__all__"
