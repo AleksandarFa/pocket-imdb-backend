@@ -24,6 +24,12 @@ class MovieSerializer(serializers.ModelSerializer):
         return Like.objects.filter(movie_id=obj.id).filter(liked=False).count()
 
 
+class CreateMovieSerializer(MovieSerializer):
+    class Meta:
+        model = Movie
+        fields = "__all__"
+
+
 class LikeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Like
