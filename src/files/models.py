@@ -7,7 +7,7 @@ from PIL import UnidentifiedImageError
 
 
 class File(models.Model):
-    THUMBNAIL_SIZE = (360, 360)
+    THUMBNAIL_SIZE = (200, 200)
 
     file = models.FileField(blank=False, null=False)
     thumbnail = models.ImageField(blank=True, null=True)
@@ -37,3 +37,6 @@ def generate_thumbnail(sender, instance=None, created=False, **kwargs):
         return
     else:
         instance.thumbnail.save(name=f'small_{instance.file.name}', content=thumbnail)
+
+    def __str__(self):
+        return self.file.name

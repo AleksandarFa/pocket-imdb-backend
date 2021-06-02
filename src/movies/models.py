@@ -13,7 +13,7 @@ class Genre(models.Model):
 class Movie(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField()
-    coverImage = models.ForeignKey(File, null=True, blank=True, on_delete=models.CASCADE)
+    cover_image = models.ForeignKey(File, null=True, blank=True, on_delete=models.CASCADE)
     genre = models.ForeignKey(Genre, on_delete=models.CASCADE)
     num_of_views = models.IntegerField(default=0)
     watch_list = models.ManyToManyField(User, through="WatchList")
