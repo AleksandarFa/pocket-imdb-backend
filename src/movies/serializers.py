@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Movie, Genre, Like, WatchList
+from src.files.serializers import FileSerializer
 
 
 class GenreSerializer(serializers.ModelSerializer):
@@ -9,6 +10,7 @@ class GenreSerializer(serializers.ModelSerializer):
 
 class MovieSerializer(serializers.ModelSerializer):
     genre = GenreSerializer()
+    cover_image = FileSerializer()
     num_of_likes = serializers.SerializerMethodField()
     num_of_dislikes = serializers.SerializerMethodField()
 
@@ -25,6 +27,8 @@ class MovieSerializer(serializers.ModelSerializer):
 
 
 class CreateMovieSerializer(MovieSerializer):
+    cover_image = serializers.IntegerField()
+
     class Meta:
         model = Movie
         fields = "__all__"
@@ -36,8 +40,17 @@ class LikeSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+class MovieWatchListSerializer(MovieSerializer):
+    cover_image = FileSerializer(required=False)
+
+    class Meta:
+        model = Movie
+        fields = "__all__"
+        extra_kwargs = {'id': {'read_only': False}}
+
+
 class WatchListSerializer(serializers.ModelSerializer):
-    movie = MovieSerializer()
+    movie = MovieWatchListSerializer()
 
     class Meta:
         model = WatchList

@@ -1,3 +1,4 @@
+from src.files.models import File
 from .models import Movie, Genre, Like
 from .serializers import MovieSerializer, GenreSerializer, LikeSerializer, WatchListSerializer, CreateMovieSerializer
 from rest_framework.response import Response
@@ -43,7 +44,12 @@ class MoviesViewset(viewsets.ModelViewSet):
         movie.is_valid(raise_exception=True)
         genre = movie.validated_data.pop('genre')
         genreObj = Genre.objects.filter(name=genre["name"])[0]
-        Movie.objects.create(genre=genreObj, **movie.validated_data)
+
+        cover_image = movie.validated_data.pop('cover_image')
+        cover_image_obj = File.objects.filter(id=cover_image)[0]
+
+        Movie.objects.create(genre=genreObj, cover_image=cover_image_obj, **movie.validated_data)
+
         return Response(movie.validated_data, status=status.HTTP_201_CREATED)
 
     @action(detail=False, pagination_class=None, methods=['GET', 'POST', 'PUT', 'DELETE'])
