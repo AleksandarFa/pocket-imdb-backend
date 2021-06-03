@@ -1,7 +1,9 @@
+from django.dispatch import receiver
+from django.db.models.signals import post_save
 from django.db import models
 from ..files.models import File
 from ..users.models import User
-
+from ..common.tasks import send_email_task
 
 class Genre(models.Model):
     name = models.CharField(max_length=30)
@@ -35,3 +37,10 @@ class WatchList(models.Model):
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     watched = models.BooleanField(default=False)
+
+
+@receiver(post_save, sender=Movie)
+def handle_email(sender, instance, created, **kwargs):
+    if created:
+        message = "Movie : {} is successfully created.".format(instance.title)
+        send_email_task.delay("Movie creation", ["aleksandar.fa@vivifyideas.com"], "no@replay.com", message)
