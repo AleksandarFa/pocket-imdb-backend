@@ -1,8 +1,9 @@
-from celery import task
+from celery import shared_task
 from django.core.mail import EmailMultiAlternatives
+from requests.exceptions import RequestException
 
 
-@task(name='SendEmailTask')
+@shared_task(name='SendEmailTask', autoretry_for=(RequestException, ))
 def send_email_task(subject, to, default_from, email_html_message):
     msg = EmailMultiAlternatives(
         subject,

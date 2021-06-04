@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     'django_inlinecss',  # inline css in templates
     'django_summernote',  # text editor
     'django_celery_beat',  # task scheduler
+    'django_celery_results',
     'djmoney',  # money object
     'health_check',
     'health_check.db',                          # stock Django health checkers
@@ -88,7 +89,9 @@ EMAIL_FROM = os.getenv('EMAIL_FROM', 'noreply@somehost.local')
 
 # Celery
 BROKER_URL = os.getenv('BROKER_URL', 'redis://redis:6379')
-CELERY_RESULT_BACKEND = os.getenv('CELERY_RESULT_BACKEND', 'redis://redis:6379')
+
+CELERY_RESULT_BACKEND = os.getenv('CELERY_RESULT_BACKEND')
+DJANGO_CELERY_RESULTS_TASK_ID_MAX_LENGTH = 191
 
 ADMINS = [("Aleksandar Fa", "aleksandar.fa@vivifyideas.com")]
 

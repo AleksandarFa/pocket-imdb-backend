@@ -6,8 +6,6 @@ from rest_framework import mixins, viewsets
 from rest_framework.decorators import action
 from rest_framework import status
 
-# from django.core.mail import mail_admins
-
 
 class MoviesViewset(viewsets.ModelViewSet):
     queryset = Movie.objects.all()
@@ -51,6 +49,7 @@ class MoviesViewset(viewsets.ModelViewSet):
         cover_image_obj = File.objects.filter(id=cover_image)[0]
 
         Movie.objects.create(genre=genreObj, cover_image=cover_image_obj, **movie.validated_data)
+
         return Response(movie.validated_data, status=status.HTTP_201_CREATED)
 
     @action(detail=False, pagination_class=None, methods=['GET', 'POST', 'PUT', 'DELETE'])
